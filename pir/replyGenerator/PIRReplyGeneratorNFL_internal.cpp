@@ -888,14 +888,15 @@ void PIRReplyGeneratorNFL_internal::freeQueries()
     {
 		  if (queriesBuf != NULL && queriesBuf[i] != NULL && queriesBuf[i][0][j].a != NULL)
       {
-  std::cout << "????????????????????????? " << queriesBuf[i][0][j].a << std::endl;
 
-        free(queriesBuf[i][0][j].a); //only free a because a and b and contingus, see pushQuery
+      // PUNG: Rust code takes care of this        
+      // free(queriesBuf[i][0][j].a); //only free a because a and b and contingus, see pushQuery
         queriesBuf[i][0][j].a = NULL;
       }
 		  if (queriesBuf != NULL && queriesBuf[i] != NULL && queriesBuf[i][1][j].a != NULL)
       {
-        free(queriesBuf[i][1][j].a); //only free a because a and b and contingus, see pushQuery
+        //PUNG: Rust code takes care of this
+  //      free(queriesBuf[i][1][j].a); //only free a because a and b and contingus, see pushQuery
         queriesBuf[i][1][j].a = NULL;
       }
 	  }
