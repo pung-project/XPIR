@@ -54,9 +54,9 @@ DBArrayProcessor::DBArrayProcessor(uint64_t len, char *bytes, uint64_t nbStreams
 	std::cout << "maxFileBytesize." <<maxFileBytesize<< std::endl;
 	std::cout << "file_list.size()." <<file_list.size()<< std::endl;
 
-#endif
 	std::cout << "DBArrayProcessor: The size of the database is " << maxFileBytesize*file_list.size() << " bytes" << std::endl;
 	std::cout << "DBArrayProcessor: The number of elements in the catalog is " << file_list.size() << std::endl;
+#endif
 }
 
 DBArrayProcessor::~DBArrayProcessor() {
