@@ -44,8 +44,8 @@ PIROptimizer::PIROptimizer(string server_ip_, int port_, FitnessType fitnessMeth
   struct timeval tv;
   tv.tv_sec  = 5; 
   tv.tv_usec = 0;         
-  setsockopt(s.native(), SOL_SOCKET, SO_RCVTIMEO, &tv, sizeof(tv));
-  setsockopt(s.native(), SOL_SOCKET, SO_SNDTIMEO, &tv, sizeof(tv));
+  setsockopt(s.native_handle(), SOL_SOCKET, SO_RCVTIMEO, &tv, sizeof(tv));
+  setsockopt(s.native_handle(), SOL_SOCKET, SO_SNDTIMEO, &tv, sizeof(tv));
 }
 
 PIROptimizer::PIROptimizer():

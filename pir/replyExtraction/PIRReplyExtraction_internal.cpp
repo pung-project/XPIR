@@ -96,7 +96,7 @@ void PIRReplyExtraction_internal::extractReply(int aggregated_maxFileSize, share
       cout << dec << endl;
 #endif
      }
-     if(rec_lvl == pirParams.d) free(data);
+//SGA: caller should do this    if(rec_lvl == pirParams.d) free(data);
     }
     if (rec_lvl < pirParams.d) free(in_data);
     in_data = in_data_2b;
