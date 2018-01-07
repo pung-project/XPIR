@@ -583,6 +583,7 @@ void NFLlib::freeNTTMemory(){
   
     if (i == alreadyInit - 1)
     {
+      free(phis);
       free(shoupphis);
       free(invpoly_times_invphis);
       free(shoupinvpoly_times_invphis);
@@ -594,6 +595,7 @@ void NFLlib::freeNTTMemory(){
       delete[] liftingIntegers;
       free(inv_indexes);
       mpz_clear(moduliProduct);
+      delete[] moduli;
     }
   }
 

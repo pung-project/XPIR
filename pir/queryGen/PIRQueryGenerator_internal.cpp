@@ -52,8 +52,8 @@ void PIRQueryGenerator_internal::generateQuery()
 #endif
   }
   double end = omp_get_wtime();
-
-#ifdef PERF_TIMERS
+  delete[] coord;
+#ifdef PERF_TIMERS  
   std::cout << "PIRQueryGenerator_internal: All the queries have been generated, total time is " << end - start << " seconds" << std::endl;
 #endif
 }
@@ -103,16 +103,15 @@ void PIRQueryGenerator_internal::joinThread()
 	if(queryThread.joinable()) queryThread.join();
 }
 
-PIRQueryGenerator_internal::~PIRQueryGenerator_internal() 
-{
-	joinThread();
-  cleanQueryBuffer();
-
-	delete[] coord;
-}
-
 void PIRQueryGenerator_internal::cleanQueryBuffer()
 {
 	while (!queryBuffer.empty())
 		free(queryBuffer.pop_front());
 }
+
+PIRQueryGenerator_internal::~PIRQueryGenerator_internal() 
+{
+	joinThread();
+  cleanQueryBuffer();
+}
+

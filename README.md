@@ -10,7 +10,7 @@ This version introduces three major changes:
 
 The original client/server applications are still available with the associated optimization tools. These can still be used for example to do some tests on PIR without developping an application or to use the optimization process in order to get interesting cryptographic and PIR parameters for a given setting.
 
-**If you use OSX, there are compilation/execution issues with v0.2.0-beta.** The old version is still available in the branch old-master and of course through previous [releases](https://github.com/XPIR-team/XPIR/releases). 
+**If you have compilation/execution issues please contact us.** The old version is still available in the branch old-master and of course through previous [releases](https://github.com/XPIR-team/XPIR/releases). 
 
 Introduction:
 =============
@@ -27,7 +27,7 @@ This project is closely related to another project available at GitHub: [NFLlib]
 
 *Important Note 2*: For publication issues, a small part of the code is missing. From a technical point of view this correspond to the gaussian noise generator for LWE which is replaced by a uniform noise generator until some scientific results are published. Replacing our uniform noise generator with our gaussian noise generator does not impact performance in an observable way.
 
-*Important Note 3*: This software cannot provide reliable privacy without more scrutiny on many details. We have tried to provide some resiliance to timing tests, but haven't tested them thoroughly. The random seed generation and pseudorandom generation use strong functions but we haven't done a thorough analysis of whether an idiotic fault is present in those critical sections of the code or not. No input verification is done by the server or client so many buffer overflows are potentially possible, etc. As is, the software *shows that privacy is possible* but cannot guarantee it against strong active adversaries (using timing attacks, introducing malformed entries, etc.) until it gets enough scrutiny.
+*Important Note 3*: This software cannot provide reliable privacy without more scrutiny on many details. We have tried to provide some resiliance to timing tests, but haven't tested them thoroughly. The random seed generation and pseudorandom generation use strong functions but we haven't done a thorough analysis of whether an idiotic fault is present in those critical sections of the code or not. No input verification is done by the server or client so many buffer overflows are potentially possible, etc. As is, the software *shows that privacy is possible* but cannot guarantee it against strong active adversaries (using timing attacks, introducing malformed entries, etc.) until it gets enough scrutiny. Setting correctly the DYLD_LIBRARY_PATH to point to the correct directory (e.g. $PROJECT_HOME/local/lib) may be necessary.
 
 
 Installation:

@@ -95,7 +95,7 @@ void PIRReplyGeneratorNFL_internal::importDataNFL(uint64_t offset, uint64_t byte
   uint64_t lastindex = 0;
 #endif
   // For global time measurement
-  double start = omp_get_wtime();double now,delta;
+  double start = omp_get_wtime();
 
   int nbruns=ceil((double)nbFiles/pirParam.alpha);
   
@@ -169,7 +169,6 @@ imported_database_t PIRReplyGeneratorNFL_internal::generateReplyGeneric(bool kee
 //  std::ifstream *is = dbhandler->openStream(0,0);
   const uint64_t nbFiles = dbhandler->getNbStream();
   const unsigned int polysize = cryptoMethod->getpolyDegree()*cryptoMethod->getnbModuli();
-  const unsigned int jumpcipher = 2*polysize / sizeof(uint64_t);
 	currentMaxNbPolys=0;
 	lwe_in_data *input = new lwe_in_data[iterations];
   lwe_cipher *resul = new lwe_cipher[iterations];
@@ -248,6 +247,7 @@ imported_database_t PIRReplyGeneratorNFL_internal::generateReplyGeneric(bool kee
   if (nbr_of_iterations > 1) keep_imported_data = false;
 #endif  
 
+#ifdef CRYPTO_DEBUG
   // If we need to do more than an iteration say it
   if (nbr_of_iterations > 1)
   {
@@ -256,6 +256,7 @@ imported_database_t PIRReplyGeneratorNFL_internal::generateReplyGeneric(bool kee
       << nbr_of_iterations << " iterations" << std::endl; 
 #endif
   }
+#endif
 
   start = omp_get_wtime();
 // #pragma omp parallel for
@@ -331,40 +332,6 @@ void PIRReplyGeneratorNFL_internal::generateReplyGenericFromData(const imported_
   }
   freeInputData();
 #endif
-  double end = omp_get_wtime();
-	std::cout<<"PIRReplyGeneratorNFL_internal: Total process time " << end - start << " seconds" << std::endl;
-	std::cout<<"PIRReplyGeneratorNFL_internal: DB processing throughput " << 8*dbhandler->getmaxFileBytesize()*dbhandler->getNbStream()/(end - start) << "bps" << std::endl;
-	std::cout<<"PIRReplyGeneratorNFL_internal: Client cleartext reception throughput  " << 8*dbhandler->getmaxFileBytesize()/(end - start) << "bps" << std::endl;
-  freeQueries();
-}
-
-
-// Function used to generate a PIR reply if:
-// - database is small enough to be kept in memory
-// - it has already been imported to it
-void PIRReplyGeneratorNFL_internal::generateReplyExternal(imported_database_t* database)
-{
-  uint64_t max_readable_size, database_size, nbr_of_iterations;
-
-  database_size = database->beforeImportElementBytesize * database->nbElements;
-  max_readable_size = 1280000000UL/database->nbElements;
-  // Ensure it is not larger than maxfilebytesize
-  max_readable_size = min(max_readable_size, database->beforeImportElementBytesize);
-  // Given readable size we get how many iterations we need
-  nbr_of_iterations = ceil((double)database->beforeImportElementBytesize/max_readable_size);
-
-
-  boost::mutex::scoped_lock l(mutex);
-  double start = omp_get_wtime();
-  for (unsigned iteration = 0; iteration < nbr_of_iterations; iteration++)
-  {
-
-    input_data = (lwe_in_data*) database->imported_database_ptr;
-    currentMaxNbPolys = database->polysPerElement;
-    repliesAmount = computeReplySizeInChunks(database->beforeImportElementBytesize);
-    generateReply();
-  }
-  freeInputData();
   double end = omp_get_wtime();
 	std::cout<<"PIRReplyGeneratorNFL_internal: Total process time " << end - start << " seconds" << std::endl;
 	std::cout<<"PIRReplyGeneratorNFL_internal: DB processing throughput " << 8*dbhandler->getmaxFileBytesize()*dbhandler->getNbStream()/(end - start) << "bps" << std::endl;
@@ -530,7 +497,9 @@ double PIRReplyGeneratorNFL_internal::precomputationSimulation(const PIRParamete
       tmp = NULL;
   }
   double result = omp_get_wtime() - start;
+#ifdef CRYPTO_DEBUG
   std::cout << "PIRReplyGeneratorNFL_internal: Deserialize took " << result << " (omp)seconds" << std::endl;
+#endif
   freeQueries();
   freeInputData();
   freeResult();
@@ -896,15 +865,14 @@ void PIRReplyGeneratorNFL_internal::freeQueries()
     {
 		  if (queriesBuf != NULL && queriesBuf[i] != NULL && queriesBuf[i][0][j].a != NULL)
       {
-
-      // PUNG: Rust code takes care of this        
-      // free(queriesBuf[i][0][j].a); //only free a because a and b and contingus, see pushQuery
+// Caller should take care of this
+//        free(queriesBuf[i][0][j].a); //only free a because a and b and contingus, see pushQuery
         queriesBuf[i][0][j].a = NULL;
       }
 		  if (queriesBuf != NULL && queriesBuf[i] != NULL && queriesBuf[i][1][j].a != NULL)
       {
-        //PUNG: Rust code takes care of this
-  //      free(queriesBuf[i][1][j].a); //only free a because a and b and contingus, see pushQuery
+// Caller should take care of this
+//        free(queriesBuf[i][1][j].a); //only free a because a and b and contingus, see pushQuery
         queriesBuf[i][1][j].a = NULL;
       }
 	  }

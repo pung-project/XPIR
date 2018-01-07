@@ -77,12 +77,14 @@ void PIRReplyExtraction_internal::extractReply(int aggregated_maxFileSize, share
     for (unsigned int j = 0 ; j < ciphertext_nbr ; j++)
     {
       data = (rec_lvl == pirParams.d) ? repliesBuffer.pop_front() : in_data+(j*data_size); 
+#ifdef DEBUG
       if (rec_lvl == pirParams.d && j == 0 ) 
       { 
 #ifdef DEBUG
         cout << "PIRReplyExtraction_internal: Starting reply extraction..." << endl;
 #endif
       }
+#endif
       out_data = cryptoMethod.decrypt(data, rec_lvl, data_size, data_size2b);
      if (rec_lvl > 1) {
        memcpy(in_data_2b+(data_size2b * j), out_data, data_size2b); 
@@ -98,10 +100,7 @@ void PIRReplyExtraction_internal::extractReply(int aggregated_maxFileSize, share
       cout << dec << endl;
 #endif
      }
-     if(rec_lvl == pirParams.d) { 
-       //SGA edit
-       //free(data); 
-     }
+//SGA: caller should do this    if(rec_lvl == pirParams.d) free(data);
     }
     if (rec_lvl < pirParams.d) free(in_data);
     in_data = in_data_2b;
