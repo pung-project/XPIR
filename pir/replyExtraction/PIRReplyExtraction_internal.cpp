@@ -71,16 +71,18 @@ void PIRReplyExtraction_internal::extractReply(int aggregated_maxFileSize, share
 
 #ifdef DEBUG
     cout << "PIRReplyExtraction_internal: rec_lvl=" << rec_lvl << " ciphertext_nbr=" << ciphertext_nbr <<  " data_size=" << data_size << " data_size2b=" << data_size2b << endl;
-#endif
     cout << "PIRReplyExtraction_internal: Waiting for first replies..." << endl;
+#endif
 
     for (unsigned int j = 0 ; j < ciphertext_nbr ; j++)
     {
       data = (rec_lvl == pirParams.d) ? repliesBuffer.pop_front() : in_data+(j*data_size); 
+#ifdef DEBUG
       if (rec_lvl == pirParams.d && j == 0 ) 
       { 
         cout << "PIRReplyExtraction_internal: Starting reply extraction..." << endl;
       }
+#endif
       out_data = cryptoMethod.decrypt(data, rec_lvl, data_size, data_size2b);
      if (rec_lvl > 1) {
        memcpy(in_data_2b+(data_size2b * j), out_data, data_size2b); 

@@ -154,7 +154,9 @@ void PIRReplyGeneratorNFL_internal::importDataNFL(uint64_t offset, uint64_t byte
 	}
 
 	free(rawBits);
+#ifdef PERF_TIMERS
 	std::cout<<"PIRReplyGeneratorNFL_internal: Finished importing the database in " << omp_get_wtime() - start << " seconds" << std::endl;
+#endif
 }
 
 #ifdef SNIFFER
@@ -245,12 +247,14 @@ imported_database_t PIRReplyGeneratorNFL_internal::generateReplyGeneric(bool kee
   if (nbr_of_iterations > 1) keep_imported_data = false;
 #endif  
 
+#ifdef CRYPTO_DEBUG
   // If we need to do more than an iteration say it
   if (nbr_of_iterations > 1)
   {
     std::cout << "PIRReplyGeneratorNFL_internal: Database is considered too large, processing it in " 
       << nbr_of_iterations << " iterations" << std::endl; 
   }
+#endif
 
   start = omp_get_wtime();
 // #pragma omp parallel for
@@ -441,7 +445,9 @@ void PIRReplyGeneratorNFL_internal::generateReply()
   }
 
   // Compute execution time
+#ifdef PERF_TIMERS
   printf( "PIRReplyGeneratorNFL_internal: Global reply generation took %f (omp)seconds\n", omp_get_wtime() - start);
+#endif
 }
 
 
@@ -489,7 +495,9 @@ double PIRReplyGeneratorNFL_internal::precomputationSimulation(const PIRParamete
       tmp = NULL;
   }
   double result = omp_get_wtime() - start;
+#ifdef CRYPTO_DEBUG
   std::cout << "PIRReplyGeneratorNFL_internal: Deserialize took " << result << " (omp)seconds" << std::endl;
+#endif
   freeQueries();
   freeInputData();
   freeResult();

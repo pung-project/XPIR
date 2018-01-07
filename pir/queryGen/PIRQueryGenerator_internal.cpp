@@ -47,12 +47,15 @@ void PIRQueryGenerator_internal::generateQuery()
 			if (i == coord[j]) queryBuffer.push(cryptoMethod.encrypt(1, j + 1 ));
 			else queryBuffer.push(cryptoMethod.encrypt(0, j + 1));
 	  }
+#ifdef DEBUG
   std::cout << "PIRQueryGenerator_internal: Generated a " << pirParams.n[j] << " element query" << std::endl;
+#endif
   }
   double end = omp_get_wtime();
   delete[] coord;
-  
+#ifdef PERF_TIMERS  
   std::cout << "PIRQueryGenerator_internal: All the queries have been generated, total time is " << end - start << " seconds" << std::endl;
+#endif
 }
 
 /**
