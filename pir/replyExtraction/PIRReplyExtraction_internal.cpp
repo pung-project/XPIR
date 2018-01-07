@@ -80,9 +80,7 @@ void PIRReplyExtraction_internal::extractReply(int aggregated_maxFileSize, share
 #ifdef DEBUG
       if (rec_lvl == pirParams.d && j == 0 ) 
       { 
-#ifdef DEBUG
         cout << "PIRReplyExtraction_internal: Starting reply extraction..." << endl;
-#endif
       }
 #endif
       out_data = cryptoMethod.decrypt(data, rec_lvl, data_size, data_size2b);

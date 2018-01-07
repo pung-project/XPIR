@@ -251,10 +251,8 @@ imported_database_t PIRReplyGeneratorNFL_internal::generateReplyGeneric(bool kee
   // If we need to do more than an iteration say it
   if (nbr_of_iterations > 1)
   {
-#ifdef CRYPTO_DEBUG
     std::cout << "PIRReplyGeneratorNFL_internal: Database is considered too large, processing it in " 
       << nbr_of_iterations << " iterations" << std::endl; 
-#endif
   }
 #endif
 
