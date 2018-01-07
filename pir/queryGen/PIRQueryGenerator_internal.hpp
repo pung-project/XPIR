@@ -43,7 +43,7 @@ class PIRQueryGenerator_internal
 
 	public:
 		boost::mutex mutex;
-		thread queryThread;
+        boost::thread queryThread;
 		shared_queue <char*> queryBuffer;
 	
 		PIRQueryGenerator_internal(PIRParameters& pirParameters, HomomorphicCrypto& cryptoMethod_);
